@@ -13,27 +13,7 @@ def geradorPDF(nome,estado_civil,profissao,cpf,rg,rua,bairro,municipio,estado,ce
 
 	text = texto.split()
 	text_line1 = text[:6]
-	"""
-	#linha superior
-	gerador.line(30,820,580,820)
-	#linha esquerda
-	gerador.line(30,820,30,20)
-	#linha inferior
-	gerador.line(30,20,580,20)
-	#linha direita
-	gerador.line(580,820,580,20)
-
-
-	#quadrado logo
-	#linha superior
-	gerador.line(250,805,350,805)
-	#linha esquerda
-	gerador.line(250,805,250,745)
-	#linha inferior
-	gerador.line(250,745,350,745)
-	#linha direita
-	gerador.line(350,805,350,745)
-	"""
+	
 	#titulo
 	gerador.drawString(210,730,'PROCURAÇÃO - PESSOA FÍSICA')
 
@@ -49,11 +29,6 @@ def geradorPDF(nome,estado_civil,profissao,cpf,rg,rua,bairro,municipio,estado,ce
 	gerador.line(485,700,580,700)
 	#adiciona a profissao no pdf
 	gerador.drawString(490,703,profissao)
-	"""
-	#exemplo
-	gerador.drawString(385,702,'uniao estavel')
-	gerador.drawString(485,702,'tecnico em')
-	"""
 
 	#linha 2
 	gerador.line(30,670,200,670)
@@ -72,7 +47,6 @@ def geradorPDF(nome,estado_civil,profissao,cpf,rg,rua,bairro,municipio,estado,ce
 	#adiciona a rua no pdf
 	gerador.drawString(300,643,rua)
 	gerador.drawString(531,640,', (bairro)')
-
 
 	#linha 4
 	gerador.line(30,610,190,610)
