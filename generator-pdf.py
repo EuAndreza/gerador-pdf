@@ -184,7 +184,3 @@ def geradorPDF(nome,estado_civil,profissao,cpf,rg,rua,bairro,municipio,estado,ce
 
 	gerador.save()
 	print('gerado com sucesso')
-
-
-geradorPDF(nomeOr,estado_civilOr,profissaoOr,cpfOr,rgOr,ruaOr,bairroOr,municipioOr,estadorOr,cepdOr,foneOr,
-	nomePro,estado_civilPro,profissaoPro,cpfPro,rgPro,ruaPro,bairroPro,municipioPro,estadoPro,cepPro,fonePro,texto)
