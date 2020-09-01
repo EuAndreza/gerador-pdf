@@ -1,6 +1,5 @@
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
-
 from datetime import date
 
 data = date.today()
@@ -11,9 +10,39 @@ def geradorPDF(nome,estado_civil,profissao,cpf,rg,rua,bairro,municipio,estado,ce
 	gerador = canvas.Canvas('{}.pdf'.format(nome), pagesize=A4)
 	gerador.setFont('Helvetica',12)
 
+	#ajusta texto para a solicitação
 	text = texto.split()
-	text_line1 = text[:6]
-	
+	text_line1 = text[:7]
+	text_line2 = text[7:22]
+	text_line3 = text[22:38]
+	text_line4 = text[38:43]
+
+	#converter o mes de numero para texto
+	if data.month == 1:
+		mes = 'janeiro'
+	elif data.month == 2:
+		mes = 'fevereiro'
+	elif data.month == 3:
+		mes = 'março'
+	elif data.month == 4:
+		mes = 'abril'
+	elif data.month == 5:
+		mes = 'maio'
+	elif data.month == 6:
+		mes = 'junho'
+	elif data.month == 7:
+		mes = 'julho'
+	elif data.month == 8:
+		mes = 'agosto'
+	elif data.month == 9:
+		mes = 'setembro'
+	elif data.month == 10:
+		mes = 'outubro'
+	elif data.month == 11:
+		mes = 'novembro'
+	elif data.month == 12:
+		mes = 'dezembro'
+
 	#titulo
 	gerador.drawString(210,730,'PROCURAÇÃO - PESSOA FÍSICA')
 
@@ -64,54 +93,67 @@ def geradorPDF(nome,estado_civil,profissao,cpf,rg,rua,bairro,municipio,estado,ce
 	#linha 5
 	gerador.drawString(30,580,'CEP')
 	gerador.line(60,580,190,580)
+	#adiciona cep no pdf
 	gerador.drawString(70,583,cep)
 	gerador.drawString(191,580,', telefone')
 	gerador.line(245,580,390,580)
+	#adiciona telefone em pdf
 	gerador.drawString(255,583,fone)
 	gerador.drawString(391,580,', pelo presente instrumento nomeia')
 
 	#linha 6
 	gerador.drawString(30,550,'e constitui como seu(sua) bastante Procurador(a) (Outorgado)')
 	gerador.line(365,550,580,550)
+	#adiciona nome de procurador no pdf
 	gerador.drawString(375,553,nomePro)
 
 	#linha 7
 	gerador.drawString(30,520,'brasileiro(a),')
 	gerador.line(100,520,195,520)
+	#adiciona estado civil do procurador no pdf
 	gerador.drawString(110,523,estado_civilPro)
 	gerador.line(200,520,450,520)
+	#adiciona profissão do procurador no pdf
 	gerador.drawString(210,523,profissaoPro)
 	gerador.drawString(451,520,', portador(a) do CPF n°')
 
 	#linha 8
 	gerador.line(30,490,150,490)
+	#adiciona cpf do procurador no pdf
 	gerador.drawString(40,493,cpfPro)
 	gerador.drawString(151,490,', RG n°')
 	gerador.line(195,490,315,490)
+	#adiciona rg do procurador no pdf
 	gerador.drawString(205,493,rgPro)
 	gerador.drawString(316,490,', residente e domiciliado(a) na (rua, avenida, etc)')
 
 	#linha 9
 	gerador.line(30,460,270,460)
+	#adiciona rua do procurador no pdf
 	gerador.drawString(40,463,ruaPro)
 	gerador.drawString(271,460,', (bairro)')
 	gerador.line(320,460,515,460)
+	#adiciona bairro do procurador no pdf
 	gerador.drawString(330,463,bairroPro)
 	gerador.drawString(516,460,', municipio')
 
 	#linha 10
 	gerador.line(30,430,150,430)
+	#adiciona municipio do procurador no pdf
 	gerador.drawString(40,433,municipioPro)
 	gerador.drawString(151,430,', estado')
 	gerador.line(200,430,330,430)
+	#adiciona estado do procurador no pdf
 	gerador.drawString(210,433,estadoPro)
 	gerador.drawString(331,430,', CEP')
 	gerador.line(370,430,525,430)
+	#adiciona cep do procurador no pdf
 	gerador.drawString(380,433,cepPro)
 	gerador.drawString(526,430,', telefone')
 
 	#linha 11
 	gerador.line(30,400,200,400)
+	#adiciona telefone do procurador no pdf
 	gerador.drawString(40,403,fonePro)
 	gerador.drawString(201,400,', com poderes para representar o outorgante perante (todos os orgãos')
 
@@ -125,12 +167,15 @@ def geradorPDF(nome,estado_civil,profissao,cpf,rg,rua,bairro,municipio,estado,ce
 
 	#linha 14
 	gerador.line(30,310,580,310)
+	gerador.drawString(40,313,' '.join(text_line2))
 
 	#linha 15
 	gerador.line(30,280,580,280)
+	gerador.drawString(40,283,' '.join(text_line3))
 
 	#linha 16
 	gerador.line(30,250,280,250)
+	gerador.drawString(40,253,' '.join(text_line4))
 	gerador.drawString(281,250,',  responsabilizando-se por todos os atos  praticados no')
 
 	#linha 17
@@ -146,11 +191,10 @@ def geradorPDF(nome,estado_civil,profissao,cpf,rg,rua,bairro,municipio,estado,ce
 	gerador.drawString(265,133,str(data.day))
 	gerador.drawString(312,130,'de')
 	gerador.line(330,130,430,130)
-	gerador.drawString(340,133,str(data.month))
+	gerador.drawString(340,133,mes)
 	gerador.drawString(432,130,'de')
 	gerador.line(450,130,505,130)
 	gerador.drawString(460,133,str(data.year))
-
 
 	#linha 20
 	gerador.line(100,100,505,100)
