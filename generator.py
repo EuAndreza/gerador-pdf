@@ -17,7 +17,7 @@ def geradorPDF(nome,estado_civil,profissao,cpf,rg,rua,bairro,municipio,estado,ce
 	text_line3 = text[22:38]
 	text_line4 = text[38:43]
 
-	#converter o mes de numero para texto
+	#converter o mes de numero para texto 
 	if data.month == 1:
 		mes = 'janeiro'
 	elif data.month == 2:
