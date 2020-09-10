@@ -1,37 +1,108 @@
 import sqlite3
+from generator import geradorPDF
+import shutil
 
 conectar = sqlite3.connect('clientes.db')
 cursor = conectar.cursor()
 
-def tabela():
-	cursor.execute("""
-		CREATE TABLE cliente(
-		id_cliente INTEGER PRIMARY KEY AUTOINCREMENT,
-		nome_cliente VARCHAR(100) NOT NULL,
-		estado_civil_cliente VARCHAR(20) NOT NULL,
-		profissao_cliente VARCHAR(70) NOT NULL,
-		cpf_cliente VARCHAR(14) NOT NULL,
-		rg_cliente VARCHAR(9) NOT NULL,
-		rua_cliente VARCHAR(100) NOT NULL,
-		bairro_cliente VARCHAR(100) NOT NULL,
-		municipio_cliente VARCHAR(100) NOT NULL,
-		estado_cliente VARCHAR(50) NOT NULL,
-		cep_cliente VARCHAR(9) NOT NULL,
-		telefone_cliente VARCHAR(15),
+#armazenando os dados que são pegos do banco
+salvar = []
 
-		nome_procurador VARCHAR(100) NOT NULL,
-		estado_civil_procurador VARCHAR(20) NOT NULL,
-		profissao_procurador VARCHAR(70) NOT NULL,
-		cpf_procurador VARCHAR(14) NOT NULL,
-		rg_procurador VARCHAR(9) NOT NULL,
-		rua_procurador VARCHAR(100) NOT NULL,
-		bairro_procurador VARCHAR(100) NOT NULL,
-		municipio_procurador VARCHAR(100) NOT NULL,
-		estado_procurador VARCHAR(50) NOT NULL,
-		cep_procurador VARCHAR(9) NOT NULL,
-		telefone_procurador VARCHAR(15)
+def exibir_cliente():
+	cursor.execute("""SELECT nome_cliente,cpf_cliente FROM cliente """)
+	for linha in cursor.fetchall():
+		print(linha)
 
-		solicitacao_procurador TEXT NOT NULL
+def inserir_dados(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,x):
+	cursor.execute(""" INSERT INTO cliente(nome_cliente,estado_civil_cliente,profissao_cliente,
+		cpf_cliente,rg_cliente,rua_cliente, bairro_cliente, municipio_cliente,estado_cliente,cep_cliente,
+		telefone_cliente,nome_procurador,estado_civil_procurador,profissao_procurador,cpf_procurador,
+		rg_procurador,rua_procurador,bairro_procurador,municipio_procurador,estado_procurador,cep_procurador,
+		telefone_procurador,solicitacao_procurador)
+		VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+		(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,x))
+	conectar.commit()
 
-		);
-		""")
+def consulta_cpf(x):
+	cursor.execute(""" SELECT nome_cliente,estado_civil_cliente,profissao_cliente,
+		cpf_cliente,rg_cliente,rua_cliente, bairro_cliente, municipio_cliente,estado_cliente,cep_cliente,
+		telefone_cliente,nome_procurador,estado_civil_procurador,profissao_procurador,cpf_procurador,
+		rg_procurador,rua_procurador,bairro_procurador,municipio_procurador,estado_procurador,cep_procurador,
+		telefone_procurador,solicitacao_procurador FROM cliente WHERE cpf_cliente = ?""",
+		(x,))
+	
+	for linha in cursor.fetchall():
+		salvar.append(linha)
+
+	conectar.commit()
+
+def gerar_pdf(s):
+	geradorPDF(s[0][0],s[0][1],s[0][2],s[0][3],s[0][4],s[0][5],s[0][6],s[0][7],s[0][8],s[0][9],s[0][10],
+		s[0][11],s[0][12],s[0][13],s[0][14],s[0][15],s[0][16],s[0][17],s[0][18],s[0][19],s[0][20],s[0][21],s[0][22])
+	
+	#move o arquivo para a area de trabalho
+	shutil.move('{}.pdf'.format(s[0][0]),'/home/usuario/Área de Trabalho/')
+
+	print("\n***Procuração gerado com sucesso***\n***O arquivo se encontra na sua area de trabalho***\n")
+	del salvar[0]
+
+cont = 'sim'
+while cont =='sim' or cont == 's':
+
+	per = input("\nDigite (ADD) para adicionar novo cliente ou (VER) para visualizar clientes cadastrados\nou (SAIR)"
+		"para sair do sistema\n*").lower()
+
+	if per == 'ver':
+		exibir_cliente()
+		per = input("\nDeseja criar um arquivo em PDF?\nDigite (SIM) para gerar o arquivo ou (NAO) para acessar outras opcoes\n*").lower()
+		if per == 'sim' or per == 's':
+			per1 = input('\ndigite o cpf do seu cliente\n*')
+			consulta_cpf(per1)
+			gerar_pdf(salvar)
+
+			cont = input('\ndeseja algo mais? digite sim ou nao\n*').lower()
+			if cont == 'nao' or cont == 'n':
+				print("\n***Obrigadx!***\n")
+
+	elif per == 'add':
+		print("*****DADOS DO CLIENTE*****\n")
+		nomeOr = input('\nDigite o nome do cliente\n*')
+		estado_civilOr = input('\nDigite o estado civil do cliente\n*')
+		profissaoOr = input('\nDigite a profissão do cliente\n*')
+		cpfOr = input('\nDigite o cpf do cliente\n*')
+		rgOr = input('\nDigite o rg do cliente\n*')
+		ruaOr = input('\nDigite a rua onde reside o cliente\n*')
+		bairroOr = input('\nDigite o bairro onde reside o cliente\n*')
+		municipioOr = input('\nDigite o municipio onde reside o cliente\n*')
+		estadorOr = input('\nDigite o estado onde reside o cliente\n*')
+		cepdOr = input('\nDigite o cep da rua onde o cliente reside\n*')
+		foneOr = input('\nDigite o numero de telefone do cliente\n*')
+
+		print("\n*****DADOS DO PROCURADXR*****\n")
+		nomePro = input('\nDigite o nome do Procurador\n*')
+		estado_civilPro = input('\nDigite estado civil do procurador\n*')
+		profissaoPro = input('\nDigite a profissao do Procurador\n*')
+		cpfPro =input('\nDigite o cpf do Procurador\n*')
+		rgPro = input('\nDigite o rg do Procurador\n*')
+		ruaPro = input('\nDigite a rua onde reside o Procurador\n*')
+		bairroPro = input('\nDigite o bairro onde reside o Procurador\n*')
+		municipioPro = input('\nDigite o municipio onde reside o Procurador\n*')
+		estadoPro = input('\nDigite o estado onde reside o Procurador\n*')
+		cepPro = input('\nDigite o cep da rua onde reside o Procurador\n*')
+		fonePro = input('\nDigite o numero de telefone do Procurador\n*')
+
+		texto = input('\nDigite o motivo para criacao dessa procuracao\n*')
+
+		print('\n***DADOS ADICIONADOS COM SUCESSO***\n')
+		cont = input('\ndeseja algo mais? digite sim ou nao\n*').lower()
+		if cont == 'nao' or cont == 'n':
+			print("\n***Obrigadx!***\n")
+
+		inserir_dados(nomeOr,estado_civilOr,profissaoOr,cpfOr,rgOr,ruaOr,bairroOr,municipioOr,estadorOr,cepdOr,foneOr,
+		nomePro,estado_civilPro,profissaoPro,cpfPro,rgPro,ruaPro,bairroPro,municipioPro,estadoPro,cepPro,fonePro,texto)
+
+	elif per == 'sair' or per =='s':
+		print("\n***Obrigadx!***\n")
+		cont = 'nao'
+
+conectar.close()
