@@ -24,6 +24,11 @@ def geradorPDF(nome,estado_civil,profissao,cpf,rg,rua,bairro,municipio,estado,ce
 		text_line3 = text[22:38]
 		text_line4 = text[38:43]
 
+		#ajusta nome de profissão
+		prof = profissao.split()
+		prof_line1 = prof[0]
+		prof_line2 = prof[1:]
+
 		#converter o mes de numero para texto 
 		if data.month == 1:
 			mes = 'janeiro'
@@ -64,10 +69,11 @@ def geradorPDF(nome,estado_civil,profissao,cpf,rg,rua,bairro,municipio,estado,ce
 		gerador.drawString(390,703,estado_civil)
 		gerador.line(485,700,580,700)
 		#adiciona a profissao no pdf
-		gerador.drawString(490,703,profissao)
+		gerador.drawString(490,703,' '.join(prof_line1))
 
 		#linha 2
 		gerador.line(30,670,200,670)
+		gerador.drawString(35,673,' '.join(prof_line2))
 		gerador.drawString(201,670,', portador(a) do CPF n°')
 		gerador.line(330,670,435,670)
 		#adiciona o cpf no pdf
@@ -193,7 +199,7 @@ def geradorPDF(nome,estado_civil,profissao,cpf,rg,rua,bairro,municipio,estado,ce
 
 		#linha 19
 		gerador.line(100,130,250,130)
-		gerador.drawString(110,133,'Recife')
+		gerador.drawString(120,133,'Recife')
 		gerador.line(255,130,310,130)
 		gerador.drawString(265,133,str(data.day))
 		gerador.drawString(312,130,'de')

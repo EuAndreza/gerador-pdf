@@ -44,22 +44,36 @@ def gerar_pdf(s):
 	shutil.move('{}.pdf'.format(s[0][0]),'/home/usuario/Área de Trabalho/')
 
 	print("\n***Procuração gerado com sucesso***\n***O arquivo se encontra na sua area de trabalho***\n")
-	del salvar[0]
+
+def deletar_bd(x):
+	cursor.execute(""" DELETE FROM cliente WHERE cpf_cliente = ?""",
+		(x,))
+	print('\n***Dados do cliente deletados com sucesso***\n')
+	conectar.commit()
 
 cont = 'sim'
 while cont =='sim' or cont == 's':
 
-	per = input("\nDigite (ADD) para adicionar novo cliente ou (VER) para visualizar clientes cadastrados\nou (SAIR)"
-		"para sair do sistema\n*").lower()
+	per = input("\nDigite (ADD) para adicionar novo cliente ou (VER) para visualizar clientes cadastrados\nou (SAIR) "
+		"para sair do sistema ou (DEL) para apagar dados do cliente\n*").lower()
 
 	if per == 'ver':
 		exibir_cliente()
-		per = input("\nDeseja criar um arquivo em PDF?\nDigite (SIM) para gerar o arquivo ou (NAO) para acessar outras opcoes\n*").lower()
-		if per == 'sim' or per == 's':
-			per1 = input('\ndigite o cpf do seu cliente\n*')
-			consulta_cpf(per1)
+		
+		per1 = input("\nPara gerar uma procuracao digite(PDF), para deletar digite(DEL)\n*").lower()
+		
+		if per1 == 'pdf' or per1 == 'p':
+			per2 = input('\nDigite o cpf do seu cliente\n*')
+			consulta_cpf(per2)
 			gerar_pdf(salvar)
+			cont = input('\ndeseja algo mais? digite sim ou nao\n*').lower()
+			if cont == 'nao' or cont == 'n':
+				print("\n***Obrigadx!***\n")
 
+		elif per1 == 'del' or per1 == 'd':
+			per2 = input('\nDigite o cpf do seu cliente\n*')
+			deletar_bd(per2)
+			exibir_cliente()
 			cont = input('\ndeseja algo mais? digite sim ou nao\n*').lower()
 			if cont == 'nao' or cont == 'n':
 				print("\n***Obrigadx!***\n")
@@ -93,16 +107,29 @@ while cont =='sim' or cont == 's':
 
 		texto = input('\nDigite o motivo para criacao dessa procuracao\n*')
 
-		print('\n***DADOS ADICIONADOS COM SUCESSO***\n')
-		cont = input('\ndeseja algo mais? digite sim ou nao\n*').lower()
-		if cont == 'nao' or cont == 'n':
-			print("\n***Obrigadx!***\n")
-
 		inserir_dados(nomeOr,estado_civilOr,profissaoOr,cpfOr,rgOr,ruaOr,bairroOr,municipioOr,estadorOr,cepdOr,foneOr,
 		nomePro,estado_civilPro,profissaoPro,cpfPro,rgPro,ruaPro,bairroPro,municipioPro,estadoPro,cepPro,fonePro,texto)
 
+		print('\n***DADOS ADICIONADOS NO BANCO COM SUCESSO***\n')
+		
+		salvar.clear()
+		consulta_cpf(cpfOr)
+		gerar_pdf(salvar)
+
+		cont = input('\nDeseja algo mais? digite sim ou nao\n*').lower()
+		if cont == 'nao' or cont == 'n':
+			print("\n***Obrigadx!***\n")
 	elif per == 'sair' or per =='s':
 		print("\n***Obrigadx!***\n")
 		cont = 'nao'
+
+	elif per == 'del' or per == 'd':
+		exibir_cliente()
+		per2 = input('\nDigite o cpf do seu cliente\n*')
+		deletar_bd(per2)
+		exibir_cliente()
+		cont = input('\ndeseja algo mais? digite sim ou nao\n*').lower()
+		if cont == 'nao' or cont == 'n':
+			print("\n***Obrigadx!***\n")
 
 conectar.close()
