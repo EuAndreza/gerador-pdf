@@ -65,10 +65,13 @@ while cont =='sim' or cont == 's':
 		if per1 == 'pdf' or per1 == 'p':
 			per2 = input('\nDigite o cpf do seu cliente\n*')
 			consulta_cpf(per2)
-			gerar_pdf(salvar)
-			cont = input('\ndeseja algo mais? digite sim ou nao\n*').lower()
-			if cont == 'nao' or cont == 'n':
-				print("\n***Obrigadx!***\n")
+			if consulta_cpf(per2) == None:
+				print('cpf não consta na lista, por favor tente novamente')
+			else:
+				gerar_pdf(salvar)
+				cont = input('\ndeseja algo mais? digite sim ou nao\n*').lower()
+				if cont == 'nao' or cont == 'n':
+					print("\n***Obrigadx!***\n")
 
 		elif per1 == 'del' or per1 == 'd':
 			per2 = input('\nDigite o cpf do seu cliente\n*')
